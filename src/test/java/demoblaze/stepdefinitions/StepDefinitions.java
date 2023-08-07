@@ -47,6 +47,21 @@ public class StepDefinitions {
                 AddProductToCart.theQuantity(1)
         );
     }
+
+    @When("El usuario selecciona el producto {string}")
+    public void elUsuarioSeleccionaElProducto(String producto) {
+        jorge.attemptsTo(
+                SelectProduct.the(producto)
+        );
+    }
+
+    @And("El usuario agrega la cantidad de productos {int} al carrito de compras.")
+    public void elUsuarioAgregaLaCantidadDeProductosAlCarritoDeCompras(Integer cantidad) {
+        jorge.attemptsTo(
+                AddProductToCart.theQuantity(cantidad)
+        );
+    }
+
     @Then("El usuario debe ver la misma cantidad de productos en el carrito de compras.")
     public void elUsuarioDebeVerLaMismaCantidadDeProductosEnElCarritoDeCompras() {
         jorge.attemptsTo(
