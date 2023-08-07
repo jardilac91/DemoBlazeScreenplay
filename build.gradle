@@ -1,6 +1,18 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:3.4.2"
+    }
+}
+
 plugins {
     id 'java'
+    id 'net.serenity-bdd.serenity-gradle-plugin' version '3.4.2'
 }
+
+defaultTasks 'clean', 'test', 'aggregate'
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
@@ -9,11 +21,44 @@ repositories {
     mavenCentral()
 }
 
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+ext{
+    slf4jVersion = '1.7.7'
+    serenityCoreVersion = '3.8.1'
+    junitVersion = '5.9.3'
+    assertJVersion = '3.22.0'
+    logbackVersion = '1.2.10'
+}
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation "net.serenity-bdd:serenity-junit5:${serenityCoreVersion}",
+            "org.junit.jupiter:junit-jupiter-api:${junitVersion}",
+            "org.assertj:assertj-core:${assertJVersion}",
+            "ch.qos.logback:logback-classic:${logbackVersion}",
+            "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}"
+    implementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-junit5:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    implementation "io.github.bonigarcia:webdrivermanager:5.4.0"
 }
 
 test {
-    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
 }
+
+serenity {
+    testRoot = "runners.DemoBlazeRunner"
+    requirementsBaseDir = "src/test/resources/features"
+    reports = ["single-page-html"]
+}
+
+test.finalizedBy(aggregate)
