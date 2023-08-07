@@ -62,6 +62,13 @@ public class StepDefinitions {
         );
     }
 
+    @When("El usuario selecciona la categoria {string} y el producto {string}")
+    public void elUsuarioSeleccionarLaCategoriaYElProducto(String categoria, String producto) {
+        jorge.attemptsTo(
+                SelectProduct.with(categoria, producto)
+        );
+    }
+
     @Then("El usuario debe ver la misma cantidad de productos en el carrito de compras.")
     public void elUsuarioDebeVerLaMismaCantidadDeProductosEnElCarritoDeCompras() {
         jorge.attemptsTo(
