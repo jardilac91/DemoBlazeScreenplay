@@ -1,2 +1,3 @@
 "Story","Title","Result","Date","Stability","Duration (s)"
-"Agregar productos al carrito de compras.","Usuario sin autenticarse selecciona un producto aleatorio y lo agrega al carrito de compras.","SUCCESS","2023-08-07T15:32:57.8373158-05:00[America/Bogota]","0.0","18.2"
+"Agregar productos al carrito de compras.","Usuario sin autenticarse selecciona un producto aleatorio y lo agrega al carrito de compras.","SUCCESS","2023-08-07T15:50:49.539168-05:00[America/Bogota]","0.0","11.67"
+"Agregar productos al carrito de compras.","Usuario sin autenticarse selecciona un producto y agrega cierta cantidad al carrito de compras.","SUCCESS","2023-08-07T15:51:01.232696-05:00[America/Bogota]","0.0","34.8"

@@ -1,0 +1,2 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Agregar productos al carrito de compras.","Un usuario autenticado agrega productos, cierra sesion y vuelve a abrirla debe seguir viendo los productos agregados en el carrito.","SUCCESS","2023-08-07T15:52:04.1848404-05:00[America/Bogota]","0.0","77.56"
