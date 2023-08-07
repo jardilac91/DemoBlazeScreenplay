@@ -1,8 +1,6 @@
 package demoblaze.stepdefinitions;
 
-import demoblaze.tasks.AddProductToCart;
-import demoblaze.tasks.SelectProduct;
-import demoblaze.tasks.ValidateShoppingCart;
+import demoblaze.tasks.*;
 import demoblaze.ui.HomePage;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -15,7 +13,9 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.thucydides.core.annotations.Managed;
 import org.openqa.selenium.WebDriver;
 
+import static demoblaze.tasks.DeleteProductShoppingCart.deleteProductShoppingCart;
 import static demoblaze.tasks.ValidateShoppingCart.validateShoppingCart;
+import static demoblaze.tasks.ValidateShoppingCartLogedUser.validateShoppingCartLogedUser;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -69,6 +69,25 @@ public class StepDefinitions {
         );
     }
 
+    @When("El usuario inicia sesion y selecciona el producto {string} y lo agrega al carrito de compras.")
+    public void elUsuarioIniciaSesionYSeleccionaElProducto(String producto) {
+        jorge.attemptsTo(
+                Login.onStore(),
+                SelectProduct.the(producto),
+                AddProductToCart.theQuantity(1)
+        );
+
+    }
+
+    @And("El usuario cierra y abre sesion e ingresa al carrito.")
+    public void elUsuarioCierraYAbreSesionEIngresaAlCarrito() {
+        jorge.attemptsTo(
+                validateShoppingCartLogedUser(),
+                Logout.fromStore(),
+                Login.onStore()
+        );
+    }
+
     @Then("El usuario debe ver la misma cantidad de productos en el carrito de compras.")
     public void elUsuarioDebeVerLaMismaCantidadDeProductosEnElCarritoDeCompras() {
         jorge.attemptsTo(
@@ -76,7 +95,7 @@ public class StepDefinitions {
         );
 
         jorge.should(
-                seeThat(
+               seeThat(
                         "The products names has to be: ",
                         product_names -> AddProductToCart.products_name,
                         equalTo(ValidateShoppingCart.product_name_shopping_cart)
@@ -91,4 +110,35 @@ public class StepDefinitions {
 
         driver.quit();
     }
+
+    @Then("El usuario debe ver la misma cantidad de productos en el carrito de compras que tenia antes de cerrar sesion.")
+    public void elUsuarioDebeVerLaMismaCantidadDeProductosEnElCarritoDeComprasQueTeniaAntesDeCerrarSesion() {
+        jorge.attemptsTo(
+                validateShoppingCart()
+        );
+        jorge.should(
+                seeThat(
+                        "The products names has to be: ",
+                        product_names -> validateShoppingCartLogedUser().product_name_shopping_cart,
+                        equalTo(validateShoppingCartLogedUser().product_name_shopping_cart)
+                ),
+                seeThat(
+                        "The products prices has to be: ",
+                        product_prices -> validateShoppingCartLogedUser().product_price_shopping_cart,
+                        equalTo(validateShoppingCartLogedUser().product_price_shopping_cart)
+                ),
+                seeThat(
+                        "The total has to be: ",
+                        product_prices -> validateShoppingCartLogedUser().total_purchase,
+                        equalTo(validateShoppingCart().total_purchase)
+                )
+        );
+
+        jorge.attemptsTo(
+                deleteProductShoppingCart()
+        );
+
+        driver.quit();
+    }
+
 }

@@ -30,3 +30,12 @@ Feature: Agregar productos al carrito de compras.
       | Phones    | Iphone 6 32gb |
       | Laptops   | MacBook air   |
       | Monitors  | ASUS Full HD  |
+
+  Scenario Outline: Un usuario autenticado agrega productos, cierra sesion y vuelve a abrirla debe seguir viendo los productos agregados en el carrito.
+    When El usuario inicia sesion y selecciona el producto "<Producto>" y lo agrega al carrito de compras.
+    And El usuario cierra y abre sesion e ingresa al carrito.
+    Then El usuario debe ver la misma cantidad de productos en el carrito de compras que tenia antes de cerrar sesion.
+    Examples:
+      |   Producto        |
+      | Iphone 6 32gb     |
+      | Sony xperia z5    |
